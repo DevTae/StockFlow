@@ -21,6 +21,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
+# 배포용 Repo 이므로 별도의 처리를 하지 않았지만, 실제 사용 시 변경해야 함.
 SECRET_KEY = 'django-insecure-q+q!ba+ofx30==3(amdi66#0ryfdbl(o22%ep&@4+6+-(ezlwp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'db.apps.DbConfig',
 ]
 
 MIDDLEWARE = [
@@ -76,8 +78,12 @@ WSGI_APPLICATION = 'server.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'stock_db',
+        'USER': 'devtae',
+        'PASSWORD': '1234', # 보안 문제로 서버 운영 시 별도 처리 필요함
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 
