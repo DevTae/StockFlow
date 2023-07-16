@@ -189,6 +189,13 @@ def test(request):
     for money in money_data.objects.all():
         print(str(money.sector) + ", " + str(money.date) + ", " + str(money.cum_money))
 
+    # 종목 제거 및 거래대금 누적합 확인
+    stock_1.delete()
+    stock_2.delete()
+    print(str(price_data.objects.all()))
+    for money in money_data.objects.all():
+        print(str(money.sector) + ", " + str(money.date) + ", " + str(money.cum_money))
+
     return HttpResponse("Done.")
 
 def reset(request):
