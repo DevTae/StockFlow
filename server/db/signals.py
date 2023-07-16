@@ -1,5 +1,5 @@
 # Developed by DevTae@2023
-from django.db.models.signals import pre_save, post_save, post_delete
+from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
 
 from .models import sector_type, theme_type, upjong_type, theme_of_stock, price_data, money_data, interested_sector, interested_alarm
@@ -29,9 +29,6 @@ def pre_save_price_data(sender, instance, **kwargs):
             sector = single_theme_of_stock.theme.sector
             money = money_data.objects.get(sector=sector.id, date=previous_instance.date)
             money.cum_money -= previous_instance.close_price * previous_instance.volume # 임의 계산
-            print("test1")
-            print(previous_instance.close_price * previous_instance.volume)
-            print(money.cum_money)
             if money.cum_money == 0:
                 money.delete()
             else:
@@ -67,7 +64,7 @@ def post_save_price_data(sender, instance, created, **kwargs):
 
 # price_data 가 삭제되는 경우, 다음과 같은 처리 진행
 # 1. 속하는 섹터에 대한 누적 거래대금 반영
-@receiver(post_delete, sender=price_data)
+@receiver(pre_delete, sender=price_data)
 def post_delete_price_data(sender, instance, **kwargs):
     # 속하는 테마의 거래대금에 누적합을 반영함
     multiple_theme_of_stock = theme_of_stock.objects.filter(stock_id=instance.stock)
