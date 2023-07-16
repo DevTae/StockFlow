@@ -7,12 +7,12 @@ class market_type(models.Model):
 
 class stock_info(models.Model):
     id = models.AutoField(primary_key=True)
-    stock_id = models.CharField(max_length=6, unique=True)
+    stock_code = models.CharField(max_length=6, unique=True)
     stock_name = models.CharField(max_length=50)
     market = models.ForeignKey(market_type, on_delete=models.CASCADE)
     
     def __str__(self):
-        return "<" + str(self.market_id) + ", " + self.stock_id + ", " + self.stock_name + ">"
+        return "<" + str(self.id) + ", " + self.stock_code + ", " + self.stock_name + ">"
     
 class sector_type(models.Model):
     id = models.AutoField(primary_key=True)
@@ -24,7 +24,7 @@ class theme_type(models.Model):
     theme_description = models.CharField(max_length=1000)
 
     def __str__(self):
-        return "<" + str(self.theme_id) + ", " + self.theme_name + ", " + self.theme_description + ">"
+        return "<" + str(self.id) + ", " + self.theme_name + ", " + self.theme_description + ">"
 
 class upjong_type(models.Model):
     id = models.AutoField(primary_key=True)
@@ -33,7 +33,7 @@ class upjong_type(models.Model):
     upjong_description = models.CharField(max_length=1000)
 
     def __str__(self):
-        return "<" + str(self.upjong_id) + ", " + self.upjong_name + ", " + self.upjong_description + ">"
+        return "<" + str(self.id) + ", " + self.upjong_name + ", " + self.upjong_description + ">"
 
 class theme_of_stock(models.Model):
     id = models.AutoField(primary_key=True)
@@ -48,17 +48,19 @@ class upjong_of_stock(models.Model):
 class price_data(models.Model):
     id = models.AutoField(primary_key=True)
     stock = models.ForeignKey(stock_info, on_delete=models.CASCADE)
-    date = models.DateField(unique=True)
+    date = models.DateField(default=0)
     open_price = models.FloatField(default=0)
     high_price = models.FloatField(default=0)
     low_price = models.FloatField(default=0)
     close_price = models.FloatField(default=0)
     volume = models.FloatField(default=0)
-    shares = models.IntegerField(default=0)
+    shares = models.BigIntegerField(default=0)
     market_cap = models.BigIntegerField(default=0)
 
     def __str__(self):
-        return self.stock_id, self.date, self.open_price, self.high_price, self.low_price, self.close_price, self.volume
+        return "<" + str(self.id) + ", " + str(self.stock) + ", " + str(self.date) + ", " \
+             + str(self.open_price) + ", " + str(self.high_price) + ", " + str(self.low_price) + ", " \
+             + str(self.close_price) + ", " + str(self.volume) + ">"
 
 class money_data(models.Model):
     id = models.AutoField(primary_key=True)
@@ -71,10 +73,10 @@ class account(models.Model):
     user_id = models.CharField(max_length=100, unique=True)
     user_pw = models.CharField(max_length=100)
     birth = models.DateField(default=None)
-    gender = models.CharField(max_length=1)
+    gender = models.CharField(max_length=1) # "m"ale or "f"emale
 
     def __str__(self):
-        return self.acc_id, self.user_id, self.birth, self.gender
+        return "<" + str(self.id) + ", " + self.user_id + ", " + str(self.birth) + ", " + self.gender + ">"
 
 class condition_list(models.Model):
     id = models.AutoField(primary_key=True)
@@ -95,5 +97,3 @@ class interested_alarm(models.Model):
     stock = models.ForeignKey(stock_info, on_delete=models.CASCADE)
     date = models.DateField(default=0)
 
-    def __str__(self):
-        return self.acc_id, self.interested_id, self.stock_id, self.date
