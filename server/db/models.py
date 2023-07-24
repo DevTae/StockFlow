@@ -12,7 +12,7 @@ class stock_info(models.Model):
     market = models.ForeignKey(market_type, on_delete=models.CASCADE)
     
     def __str__(self):
-        return "<" + str(self.id) + ", " + self.stock_code + ", " + self.stock_name + ">"
+        return "<stock_info: " + str(self.id) + ", " + self.stock_code + ", " + self.stock_name + ">"
     
 class sector_type(models.Model):
     id = models.AutoField(primary_key=True)
@@ -24,7 +24,7 @@ class theme_type(models.Model):
     theme_description = models.CharField(max_length=1000)
 
     def __str__(self):
-        return "<" + str(self.id) + ", " + self.theme_name + ", " + self.theme_description + ">"
+        return "<theme_type: " + str(self.id) + ", " + self.theme_name + ", " + self.theme_description + ">"
 
 class upjong_type(models.Model):
     id = models.AutoField(primary_key=True)
@@ -33,7 +33,7 @@ class upjong_type(models.Model):
     upjong_description = models.CharField(max_length=1000)
 
     def __str__(self):
-        return "<" + str(self.id) + ", " + self.upjong_name + ", " + self.upjong_description + ">"
+        return "<upjong_type: " + str(self.id) + ", " + self.upjong_name + ", " + self.upjong_description + ">"
 
 class theme_of_stock(models.Model):
     id = models.AutoField(primary_key=True)
@@ -58,10 +58,19 @@ class price_data(models.Model):
     market_cap = models.BigIntegerField(default=0)
 
     def __str__(self):
-        return "<" + str(self.id) + ", " + str(self.stock) + ", " + str(self.date) + ", " \
+        return "<price_data: " + str(self.id) + ", " + str(self.stock) + ", " + str(self.date) + ", " \
              + str(self.open_price) + ", " + str(self.high_price) + ", " + str(self.low_price) + ", " \
              + str(self.close_price) + ", " + str(self.volume) + ">"
 
+# 이동평균선 보조지표 모델 추가
+class indicator_sma_data(models.Model):
+    price = models.ForeignKey(price_data, on_delete=models.CASCADE)
+    period = models.IntegerField(default=0)
+    value = models.FloatField(default=0)
+
+    def __str__(self):
+        return "<indicator_sma_data: " + str(self.price) + ", " + str(self.period) + ", " + str(self.value) + ">"
+    
 class money_data(models.Model):
     id = models.AutoField(primary_key=True)
     sector = models.ForeignKey(sector_type, on_delete=models.CASCADE)
@@ -76,7 +85,7 @@ class account(models.Model):
     gender = models.CharField(max_length=1) # "m"ale or "f"emale
 
     def __str__(self):
-        return "<" + str(self.id) + ", " + self.user_id + ", " + str(self.birth) + ", " + self.gender + ">"
+        return "<account: " + str(self.id) + ", " + self.user_id + ", " + str(self.birth) + ", " + self.gender + ">"
 
 class condition_list(models.Model):
     id = models.AutoField(primary_key=True)

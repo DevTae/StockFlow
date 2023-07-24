@@ -2,7 +2,8 @@ from django.test import TestCase
 from django.http import HttpResponse
 
 from .models import market_type, sector_type, theme_type, stock_info, theme_of_stock, \
-                    price_data, account, condition_list, interested_sector, interested_alarm, money_data
+                    price_data, account, condition_list, interested_sector, interested_alarm, money_data, \
+                    indicator_sma_data
 import datetime
 
 # 해당 코드들 Fat Model 및 Service Layer 로서 구현. (기본적인 함수 호출은 Fat Model 편입 생각 중)
@@ -120,6 +121,14 @@ def insert_price_data(stock, date, open_price, high_price, low_price, close_pric
     new_price_data.save()
     return new_price_data
 
+def insert_indicator_sma_data(price, period, value):
+    new_indicator_sma_data = indicator_sma_data()
+    new_indicator_sma_data.price = price
+    new_indicator_sma_data.period = period
+    new_indicator_sma_data.value = value
+    new_indicator_sma_data.save()
+    return new_indicator_sma_data
+
 def update_price_data(stock, date, open_price, high_price, low_price, close_price, volume, shares, market_cap):
     new_price_data = price_data.objects.get(stock=stock, date=date)
     new_price_data.open_price = open_price
@@ -168,17 +177,23 @@ def test(request):
     print(interested_sector.objects.all())
 
     # 종목에 가격 데이터 추가
-    insert_price_data(stock_1, datetime.date(2023, 7, 11), 70200, 71500, 70100, 71500, 12177392, 0, 0)
-    insert_price_data(stock_1, datetime.date(2023, 7, 12), 70200, 71500, 70100, 71500, 12177392, 0, 0)
-    insert_price_data(stock_2, datetime.date(2023, 7, 11), 140200, 145300, 139900, 145300, 378816, 0, 0)
-    insert_price_data(stock_2, datetime.date(2023, 7, 12), 140200, 145300, 139900, 145300, 378816, 0, 0)
+    price_data_1_1 = insert_price_data(stock_1, datetime.date(2023, 7, 11), 70200, 71500, 70100, 71500, 12177392, 0, 0)
+    price_data_1_2 = insert_price_data(stock_1, datetime.date(2023, 7, 12), 70200, 71500, 70100, 71500, 12177392, 0, 0)
+    price_data_2_1 = insert_price_data(stock_2, datetime.date(2023, 7, 11), 140200, 145300, 139900, 145300, 378816, 0, 0)
+    price_data_2_2 = insert_price_data(stock_2, datetime.date(2023, 7, 12), 140200, 145300, 139900, 145300, 378816, 0, 0)
     print(str(price_data.objects.all()))
     for money in money_data.objects.all():
         print(str(money.sector) + ", " + str(money.date) + ", " + str(money.cum_money))
 
+    # 종목 가격 데이터에 보조지표 추가
+    indicator_sma_data_1_1_20 = insert_indicator_sma_data(price_data_1_1, 20, 71000)
+    indicator_sma_data_1_1_60 = insert_indicator_sma_data(price_data_1_1, 60, 71500)
+    indicator_sma_data_1_2_20 = insert_indicator_sma_data(price_data_1_1, 20, 140000)
+    print(str(indicator_sma_data.objects.all()))
+
     # 가격 데이터 업데이트
-    update_price_data(stock_1, datetime.date(2023, 7, 11), 100000, 100000, 100000, 100000, 12177392, 0, 0)
-    update_price_data(stock_2, datetime.date(2023, 7, 11), 140200, 145300, 139900, 200000, 378816, 0, 0)
+    price_data_1_1 = update_price_data(stock_1, datetime.date(2023, 7, 11), 100000, 100000, 100000, 100000, 12177392, 0, 0)
+    price_data_2_1 = update_price_data(stock_2, datetime.date(2023, 7, 11), 140200, 145300, 139900, 200000, 378816, 0, 0)
     print(str(price_data.objects.all()))
     for money in money_data.objects.all():
         print(str(money.sector) + ", " + str(money.date) + ", " + str(money.cum_money))
@@ -195,6 +210,7 @@ def test(request):
     print(str(price_data.objects.all()))
     for money in money_data.objects.all():
         print(str(money.sector) + ", " + str(money.date) + ", " + str(money.cum_money))
+    print(str(indicator_sma_data.objects.all()))
 
     return HttpResponse("Done.")
 
@@ -209,5 +225,6 @@ def reset(request):
     condition_list.objects.all().delete()
     interested_sector.objects.all().delete()
     interested_alarm.objects.all().delete()
+    indicator_sma_data.objects.all().delete()
 
     return HttpResponse("Done.")
