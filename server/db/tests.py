@@ -1,9 +1,7 @@
 from django.test import TestCase
 from django.http import HttpResponse
 
-from .models import market_type, sector_type, theme_type, stock_info, theme_of_stock, \
-                    price_data, account, condition_list, interested_sector, interested_alarm, money_data, \
-                    indicator_sma_data
+from .models import market_type, sector_type, theme_type, stock_info, theme_of_stock, price_data, money_data
 import datetime
 
 # 해당 코드들 Fat Model 및 Service Layer 로서 구현. (기본적인 함수 호출은 Fat Model 편입 생각 중)
@@ -34,6 +32,7 @@ def get_sector_id_from_theme(theme_id: int):
     selected_theme = theme_type.objects.get(theme_id=theme_id)
     return selected_theme.sector
 
+"""
 # 유저 아이디를 바탕으로 유저 인스턴스 찾기
 def get_account_id(user_id):
     selected_account = account.objects.get(user_id=user_id)
@@ -43,6 +42,7 @@ def get_account_id(user_id):
 def get_condition_id(condition_name):
     selected_condition = condition_list.objects.get(condition_name=condition_name)
     return selected_condition
+"""
 
 def insert_market(market_id, market_name):
     new_market = market_type()
@@ -81,6 +81,7 @@ def insert_stock_into_theme(stock, theme):
     new_theme_of_stock.save()
     return new_theme_of_stock
 
+"""
 def insert_account(user_id, user_pw, birth, gender):
     new_account = account()
     new_account.user_id = user_id
@@ -106,6 +107,7 @@ def insert_stock_into_interested(account, sector, condition_id, from_date, to_da
     new_interested_sector.to_date = to_date
     new_interested_sector.save()
     return new_interested_sector
+"""
 
 def insert_price_data(stock, date, open_price, high_price, low_price, close_price, volume, shares, market_cap):
     new_price_data = price_data()
@@ -121,6 +123,7 @@ def insert_price_data(stock, date, open_price, high_price, low_price, close_pric
     new_price_data.save()
     return new_price_data
 
+"""
 def insert_indicator_sma_data(price, period, value):
     new_indicator_sma_data = indicator_sma_data()
     new_indicator_sma_data.price = price
@@ -128,6 +131,7 @@ def insert_indicator_sma_data(price, period, value):
     new_indicator_sma_data.value = value
     new_indicator_sma_data.save()
     return new_indicator_sma_data
+"""
 
 def update_price_data(stock, date, open_price, high_price, low_price, close_price, volume, shares, market_cap):
     new_price_data = price_data.objects.get(stock=stock, date=date)
@@ -166,6 +170,7 @@ def test(request):
     insert_stock_into_theme(stock_2, theme)
     print(theme_of_stock.objects.all())
 
+    """
     # 조건검색 기준 추가
     condition = insert_condition(1, "과열")
     print(condition_list.objects.all())
@@ -175,7 +180,8 @@ def test(request):
     print(account.objects.all())
     insert_stock_into_interested(acc, sector, condition, datetime.date(2023, 7, 10), datetime.date(2023, 7, 31))
     print(interested_sector.objects.all())
-
+    """
+    
     # 종목에 가격 데이터 추가
     price_data_1_1 = insert_price_data(stock_1, datetime.date(2023, 7, 11), 70200, 71500, 70100, 71500, 12177392, 0, 0)
     price_data_1_2 = insert_price_data(stock_1, datetime.date(2023, 7, 12), 70200, 71500, 70100, 71500, 12177392, 0, 0)
@@ -185,11 +191,13 @@ def test(request):
     for money in money_data.objects.all():
         print(str(money.sector) + ", " + str(money.date) + ", " + str(money.cum_money))
 
+    """
     # 종목 가격 데이터에 보조지표 추가
     indicator_sma_data_1_1_20 = insert_indicator_sma_data(price_data_1_1, 20, 71000)
     indicator_sma_data_1_1_60 = insert_indicator_sma_data(price_data_1_1, 60, 71500)
     indicator_sma_data_1_2_20 = insert_indicator_sma_data(price_data_1_1, 20, 140000)
     print(str(indicator_sma_data.objects.all()))
+    """
 
     # 가격 데이터 업데이트
     price_data_1_1 = update_price_data(stock_1, datetime.date(2023, 7, 11), 100000, 100000, 100000, 100000, 12177392, 0, 0)
@@ -210,7 +218,7 @@ def test(request):
     print(str(price_data.objects.all()))
     for money in money_data.objects.all():
         print(str(money.sector) + ", " + str(money.date) + ", " + str(money.cum_money))
-    print(str(indicator_sma_data.objects.all()))
+    #print(str(indicator_sma_data.objects.all()))
 
     return HttpResponse("Done.")
 
@@ -221,10 +229,12 @@ def reset(request):
     stock_info.objects.all().delete()
     theme_of_stock.objects.all().delete()
     price_data.objects.all().delete()
+    """
     account.objects.all().delete()
     condition_list.objects.all().delete()
     interested_sector.objects.all().delete()
     interested_alarm.objects.all().delete()
     indicator_sma_data.objects.all().delete()
+    """
 
     return HttpResponse("Done.")

@@ -62,6 +62,13 @@ class price_data(models.Model):
              + str(self.open_price) + ", " + str(self.high_price) + ", " + str(self.low_price) + ", " \
              + str(self.close_price) + ", " + str(self.volume) + ">"
 
+class money_data(models.Model):
+    id = models.AutoField(primary_key=True)
+    sector = models.ForeignKey(sector_type, on_delete=models.CASCADE)
+    date = models.DateField(default=0, unique=True)
+    cum_money = models.BigIntegerField(default=0)
+
+"""
 # 이동평균선 보조지표 모델 추가
 class indicator_sma_data(models.Model):
     price = models.ForeignKey(price_data, on_delete=models.CASCADE)
@@ -70,12 +77,6 @@ class indicator_sma_data(models.Model):
 
     def __str__(self):
         return "<indicator_sma_data: " + str(self.price) + ", " + str(self.period) + ", " + str(self.value) + ">"
-    
-class money_data(models.Model):
-    id = models.AutoField(primary_key=True)
-    sector = models.ForeignKey(sector_type, on_delete=models.CASCADE)
-    date = models.DateField(default=0, unique=True)
-    cum_money = models.BigIntegerField(default=0)
 
 class account(models.Model):
     id = models.AutoField(primary_key=True)
@@ -105,4 +106,4 @@ class interested_alarm(models.Model):
     interested = models.ForeignKey(interested_sector, on_delete=models.CASCADE)
     stock = models.ForeignKey(stock_info, on_delete=models.CASCADE)
     date = models.DateField(default=0)
-
+"""
