@@ -7,4 +7,4 @@ class DbConfig(AppConfig):
     
     # django 시작 시 호출되는 함수 (server/settings.py 바탕)
     def ready(self):
-        import db.signals
+        import db.signals.signals
