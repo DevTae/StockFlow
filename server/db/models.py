@@ -62,11 +62,17 @@ class price_data(models.Model):
              + str(self.open_price) + ", " + str(self.high_price) + ", " + str(self.low_price) + ", " \
              + str(self.close_price) + ", " + str(self.volume) + ">"
 
+# 누적 거래대금 지표 모델 추가
 class money_data(models.Model):
     id = models.AutoField(primary_key=True)
     sector = models.ForeignKey(sector_type, on_delete=models.CASCADE)
     date = models.DateField(default=0, unique=True)
     cum_money = models.BigIntegerField(default=0)
+
+# 가격예측 결과 지표 모델 추가
+class price_predicted_data(models.Model):
+    price = models.ForeignKey(price_data, on_delete=models.CASCADE)
+    score = models.IntegerField(default=50) # 0 ~ 100
 
 """
 # 이동평균선 보조지표 모델 추가
