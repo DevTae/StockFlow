@@ -1,7 +1,7 @@
 from django.test import TestCase
 from django.http import HttpResponse
 
-from .models import market_type, sector_type, theme_type, stock_info, theme_of_stock, price_data, money_data
+from .models import market_type, sector_type, theme_type, stock_info, theme_of_stock, price_data, money_data, price_predicted_data
 import datetime
 
 # 해당 코드들 Fat Model 및 Service Layer 로서 구현. (기본적인 함수 호출은 Fat Model 편입 생각 중)
@@ -123,6 +123,13 @@ def insert_price_data(stock, date, open_price, high_price, low_price, close_pric
     new_price_data.save()
     return new_price_data
 
+def insert_price_predicted_data(price, score):
+    new_price_predicted_data = price_predicted_data()
+    new_price_predicted_data.price = price
+    new_price_predicted_data.score = score
+    new_price_predicted_data.save()
+    return new_price_predicted_data
+
 """
 def insert_indicator_sma_data(price, period, value):
     new_indicator_sma_data = indicator_sma_data()
@@ -191,6 +198,11 @@ def test(request):
     for money in money_data.objects.all():
         print(str(money.sector) + ", " + str(money.date) + ", " + str(money.cum_money))
 
+    # 가격예측 데이터 추가
+    price_predicted_data_1_1 = insert_price_predicted_data(price_data_1_1, 30)
+    price_predicted_data_1_2 = insert_price_predicted_data(price_data_1_2, 70)
+    print(str(price_predicted_data.objects.all()))
+
     """
     # 종목 가격 데이터에 보조지표 추가
     indicator_sma_data_1_1_20 = insert_indicator_sma_data(price_data_1_1, 20, 71000)
@@ -218,6 +230,7 @@ def test(request):
     print(str(price_data.objects.all()))
     for money in money_data.objects.all():
         print(str(money.sector) + ", " + str(money.date) + ", " + str(money.cum_money))
+    print(str(price_predicted_data.objects.all()))
     #print(str(indicator_sma_data.objects.all()))
 
     return HttpResponse("Done.")
@@ -229,6 +242,7 @@ def reset(request):
     stock_info.objects.all().delete()
     theme_of_stock.objects.all().delete()
     price_data.objects.all().delete()
+    price_predicted_data.objects.all().delete()
     """
     account.objects.all().delete()
     condition_list.objects.all().delete()
