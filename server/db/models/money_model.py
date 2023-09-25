@@ -1,6 +1,6 @@
 # Copyright DevTae@2023 all rights reserved.
 from django.db import models
-from ..models.sector import sector_type
+from .sector_model import sector_type
 
 # 누적 거래대금 지표 모델 추가
 class money_data(models.Model):

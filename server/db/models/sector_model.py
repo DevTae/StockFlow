@@ -1,6 +1,6 @@
 # Copyright DevTae@2023 all rights reserved.
 from django.db import models
-from ..models.stock import stock_info
+from .stock_model import stock_info
 
 class sector_type(models.Model):
     id = models.AutoField(primary_key=True)

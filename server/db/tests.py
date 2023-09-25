@@ -1,9 +1,9 @@
 from django.test import TestCase
 from django.http import HttpResponse
 
-from .models.stock import market_type, stock_info, price_data, price_predicted_data
-from .models.sector import sector_type, theme_type, theme_of_stock
-from .models.money import money_data
+from .models.stock_model import market_type, stock_info, price_data, price_predicted_data
+from .models.sector_model import sector_type, theme_type, theme_of_stock
+from .models.money_model import money_data
 import datetime
 
 # 해당 코드들 Fat Model 및 Service Layer 로서 구현. (기본적인 함수 호출은 Fat Model 편입 생각 중)

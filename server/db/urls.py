@@ -1,14 +1,13 @@
 from django.urls import path, include
-from rest_framework import routers
-from .views import market
+from .views.stock_view import MarketView, StockInfoView, StockInfoEachView
 from . import tests
 
-router = routers.DefaultRouter()
-router.register('market', market.MarketViewSet)
-
 urlpatterns = [
-    path('', market.index, name='index'),
     path('test/', tests.test, name='test'), # for test
     path('reset/', tests.reset, name='reset'), # for test
-    path('', include(router.urls)),
+    
+    # stock
+    path('market/', MarketView.as_view(), name="market"),
+    path('stock/', StockInfoView.as_view(), name="stock-list"),
+    path('stock/<str:stock_code>/', StockInfoEachView.as_view(), name="stock-per"),
 ]
