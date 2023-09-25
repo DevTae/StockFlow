@@ -1,5 +1,5 @@
 from django.apps import AppConfig
-
+import db.api_key
 
 class DbConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
@@ -7,4 +7,5 @@ class DbConfig(AppConfig):
     
     # django 시작 시 호출되는 함수 (server/settings.py 바탕)
     def ready(self):
+        # signals 함수 적용
         import db.signals.signals

@@ -4,11 +4,12 @@ from rest_framework import status
 from django.core.paginator import Paginator
 from ..models.stock_model import market_type, stock_info
 from ..serializers.stock_serializer import MarketTypeSerializer, StockInfoSerializer
-
+from ..api_key import api_keys
 
 """
 POST /market/
 {
+    "api_key" : xxxxxx,
     "market_name" : "kospi"
 }
 다음과 같이 전송한 뒤에, GET 을 사용하면 된다.
@@ -20,6 +21,13 @@ class MarketView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def post(self, request):
+        if 'api_key' not in request.data:
+            return Response({"message": "api_key 값이 존재하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        api_key = request.data.pop('api_key')
+        if api_key not in api_keys:
+            return Response({"message": "api_key 값이 유효하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+
         serializer = MarketTypeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -41,10 +49,12 @@ class StockInfoView(APIView):
             
             stock_list = stock_info.objects.order_by('stock_code')
             paginator = Paginator(stock_list, per_page=max_per_page)
-            print(paginator.num_pages)
+            
             if page <= 0 or page > paginator.num_pages:
                 return Response({"message": "page 옵션 값이 유효하지 않습니다."}, status=status.HTTP_204_NO_CONTENT)
             stock_list = paginator.get_page(page)
+
+            print(api_keys)
 
         elif 'limit' in request.GET:
             limit = int(request.GET['limit'])
@@ -65,12 +75,20 @@ class StockInfoView(APIView):
     """
     POST
     {
+        "api_key" : xxxxxx,
         "market_name" : xxxxxx,
         "stock_code" : xxxxxx,
         "stock_name" : xxxxxx
     }
     """
     def post(self, request):
+        if 'api_key' not in request.data:
+            return Response({"message": "api_key 값이 존재하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        api_key = request.data.pop('api_key')
+        if api_key not in api_keys:
+            return Response({"message": "api_key 값이 유효하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)
+
         # market_name 을 바탕으로 외래키의 주키 찾기
         if 'market_name' in request.data.keys():
             try:
