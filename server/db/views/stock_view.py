@@ -11,20 +11,22 @@ from ..errors import RES_ERR_MSG_HEAD_MUST_EXISTS, \
                      RES_ERR_MSG_VAL_NOT_VALID, \
                      RES_ERR_MSG_VAL_NOT_FOUND
                      
-"""
-POST /market/
-{
-    "api_key" : xxxxxx,
-    "market_name" : "kospi"
-}
-다음과 같이 전송한 뒤에, GET 을 사용하면 된다.
-"""
 class MarketView(APIView):
+    """
+    GET /market
+    """
     def get(self, request):
         market_list = market_type.objects.all()
         serializer = MarketTypeSerializer(market_list, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    """
+    POST /market/
+    {
+        "api_key" : xxxxxx,
+        "market_name" : "kospi"
+    }
+    """
     def post(self, request):
         if api_key_header not in request.data:
             return RES_ERR_MSG_HEAD_MUST_EXISTS(api_key_header)
@@ -39,6 +41,14 @@ class MarketView(APIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
+    """
+    PUT /market
+    {
+        "api_key" : xxxxxx,
+        "market_name" : "kospi",
+        "market_name_after" : "kosdaq"
+    }
+    """
     def put(self, request):
         if api_key_header not in request.data:
             return RES_ERR_MSG_HEAD_MUST_EXISTS(api_key_header)
@@ -47,13 +57,14 @@ class MarketView(APIView):
         if api_key not in api_keys:
             return RES_ERR_MSG_VAL_NOT_VALID(api_key_header)
         
-        pass
-
+        
 
 
 class StockInfoView(APIView):
-    # /stock?page={page}
-    # /stock?limit={limit}
+    """
+    GET /stock?page={page}
+    GET /stock?limit={limit}
+    """
     def get(self, request):
         max_per_page = 10
         
