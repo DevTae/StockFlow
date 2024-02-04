@@ -13,10 +13,10 @@
     - `File System` 을 기반으로 주가 데이터 수집
     - 테마 및 업종 정보 수집
 
-  - [`StockDatabase`](https://github.com/DevTae/StockDatabasePreview) ↔ [`StockPricePrediction`](https://github.com/DevTae/StockPricePredictionPreview)
+  - [`StockDatabase`](https://github.com/DevTae/StockDatabasePreview) ↔ [`StockPricePrediction`](https://github.com/DevTae/StockPricePredictionPreview) (예정)
     - 수집한 주가 데이터를 바탕으로 가격 예측 결과 수집
 
-  - [`StockDatabase`](https://github.com/DevTae/StockDatabasePreview) → `StockFlow`
+  - [`StockDatabase`](https://github.com/DevTae/StockDatabasePreview) → `StockFlow` (예정)
     - 주가 데이터 + 가격 예측 결과 + 테마 및 업종 정보 전송
     - `rabbitMQ` 를 바탕으로 `Redis Cache Server` 에 이벤트 전송
       - 수치가 변경된 항목들에 대한 Reloading 작업 진행
