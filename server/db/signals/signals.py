@@ -2,7 +2,9 @@
 from django.db.models.signals import pre_save, post_save, pre_delete
 from django.dispatch import receiver
 
-from .models import sector_type, theme_type, upjong_type, theme_of_stock, price_data, money_data, interested_sector, interested_alarm
+from ..models.sector_model import sector_type, theme_type, upjong_type, theme_of_stock
+from ..models.stock_model import price_data
+from ..models.money_model import money_data
 
 # theme_type 새롭게 insert 할 시, sector_type 에 반영
 @receiver(pre_save, sender=theme_type)
