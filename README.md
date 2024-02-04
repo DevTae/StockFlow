@@ -1,6 +1,6 @@
 ### StockFlow
 
--  `Airflow`, `Django`, [`StockTools`](https://github.com/DevTae/StockToolsPreview), [`StockPricePrediction`](https://github.com/DevTae/StockPricePredictionPreview) 를 활용하여 **주식 섹터 거래대금 분석, 딥러닝 모델 기반 가격예측, 핵심 키워드 분석에 대한 데이터를 ETL 기반으로 가공하여 제공**하는 `Apache Airflow 기반 데이터 파이프라인` 및 `RESTful API 서버` 프로젝트입니다.
+-  `Airflow`, `Django`, [`StockTools`](https://github.com/DevTae/StockToolsPreview), [`StockPricePrediction`](https://github.com/DevTae/StockPricePredictionPreview), `StockKeywordAnalysis` 를 활용하여 **주식 섹터 거래대금 분석, 딥러닝 모델 기반 가격예측, 핵심 키워드 분석에 대한 데이터를 ETL 기반으로 가공하여 제공**하는 `Apache Airflow 기반 데이터 파이프라인` 및 `RESTful API 서버` 프로젝트입니다.
 
 - 개발 현황 트래킹
   - `Django RESTful API` 명세서 → [Notion Link](https://righteous-cuticle-5ba.notion.site/StockFlow-API-f905aa86afe541019af46298457e4c9a?pvs=4)
