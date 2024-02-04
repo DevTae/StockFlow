@@ -13,7 +13,7 @@
     - [`StockTools`](https://github.com/DevTae/StockToolsPreview)
       - **회사 내의 데이터베이스 가정** (종가가 확정(*VI 포함*)된 **오후 3시 40분**부터 주식 가격, 업종 및 테마 데이터 스크래핑 작업 시작)
     - `StockFlow` ↔ [`StockTools`](https://github.com/DevTae/StockToolsPreview)
-      - `StockTools` 의 스크래핑 작업이 완료된 순간부터 **ASP.net RESTful API 호출을 통한 주가 데이터, 테마 및 업종 정보** 자동 수집
+      - 스크래핑 작업이 완료된 순간부터 **ASP.net RESTful API 호출을 통한 주가 데이터, 테마 및 업종 정보** 자동 수집
     - `StockFlow` ↔ [`StockPricePrediction`](https://github.com/DevTae/StockPricePredictionPreview)
       - 수집한 주가 데이터를 바탕으로 **딥러닝 모델 기반 가격 예측 결과** 자동 수집
     - `StockFlow` ↔ `StockKeywordAnalysis`
